@@ -8,7 +8,11 @@ resource "aws_s3_bucket" "prod_tf_play" {
   acl    = "private"
 }
 
-resource "aws_default_vpc" "default" {}
+resource "aws_default_vpc" "default" {
+  tags = {
+    Name = "Default VPC"
+  }
+}
 
 resource "aws_security_group" "prod_web" {
   name        = "prod_web"
@@ -38,5 +42,17 @@ resource "aws_security_group" "prod_web" {
   tags = {
     "Terraform" : "true"
   }
+}
 
+resource "aws_instance" "prod_web" {
+  ami           = "ami-0715ec6d98dd151b5"
+  instance_type = "t2.micro"
+
+  vpc_security_group_ids = [
+    aws_security_group.prod_web.id
+  ]
+
+  tags = {
+    "Terraform" : "true"
+  }
 }
