@@ -19,11 +19,11 @@ variable "web_min_size" {
 
 provider "aws" {
   profile = "default"
-  region  = "us-west-2"
+  region  = "us-east-2"
 }
 
-resource "aws_s3_bucket" "prod_tf_course" {
-  bucket = "tf-course-20191118"
+resource "aws_s3_bucket" "prod_tf_play" {
+  bucket = "tf-play-bucket-khanadnanxyz"
   acl    = "private"
   tags = {
     "Terraform" : "true"
@@ -33,14 +33,14 @@ resource "aws_s3_bucket" "prod_tf_course" {
 resource "aws_default_vpc" "default" {}
 
 resource "aws_default_subnet" "default_az1" {
-  availability_zone = "us-west-2a"
+  availability_zone = "us-east-2a"
   tags = {
     "Terraform" : "true"
   }
 }
 
 resource "aws_default_subnet" "default_az2" {
-  availability_zone = "us-west-2b"
+  availability_zone = "us-east-2b"
   tags = {
     "Terraform" : "true"
   }
@@ -84,5 +84,5 @@ module "web_app" {
   web_min_size         = var.web_min_size
   subnets              = [aws_default_subnet.default_az1.id,aws_default_subnet.default_az2.id]
   security_groups      = [aws_security_group.prod_web.id]
-  web_app	       = "prod"
+  web_app	             = "prod"
 }
